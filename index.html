@@ -1,50 +1,74 @@
 <script>
-(function(w,d,s,i,n){w[n]=w[n]||{q:[],init:function(o){w[n].initOpts=o;},ready:function(c){w[n].q.push(c);}};
-setTimeout(function(j,k){if(!d.getElementById(i)){k=d.getElementsByTagName(s)[0];j=d.createElement(s);j.id=i;
-j.src="https://cdn.by.wonderpush.com/sdk/1.1/wonderpush-loader.min.js";k.parentNode.insertBefore(j,k);}},0);
-}(window,document,"script","wonderpush-jssdk-loader","WonderPush"));
+    <script>
 
-WonderPush.init({
-    webKey: "7be09f084f0ba8ab5546b4457c47acfa49ddef0a5da4c1702d8aed8263b92f2a",
-    optInOptions: {
-        // You can modify or translate the following:
-        externalBoxMessage: "Easybook would like to send you notifications",
-        externalBoxExampleTitle: "Easybook notification",
-        externalBoxExampleMessage: "This is an Easybook notification",
-        externalBoxDisclaimer: "You can always unsubscribe at anytime.",
-        externalBoxProcessingMessage: "Subscribing...",
-        externalBoxSuccessMessage: "Thanks for subscribing!",
-        externalBoxFailureMessage: "This function was not supported to this particular browser..",
-        externalBoxTooLongHint: "Poor connection or private browsing?",
-        externalBoxCloseHint: "Close",
-        modalBoxMessage: "We will send you personalized notifications.<br/>You can always unsubscribe at any time.",
-        modalBoxButton: "Got it!"
-    },
-    plugins: {
-        'optin-dialog': null
-        }
-    
-    //plugins: {
-    //    'optin-dialog': {
-    //        triggers: {
 
-    //        },
-    //        title: "Would you like to subscribe to our Easybook deals?",
-    //        message: "You can always unsubscribe at any time.",
-    //        positiveButton: "Okay",
-    //        negativeButton: "Later",
-    //        hidePoweredBy: true
-    //    }
-    //}
-    });
+        $(document).ready(function () {
+            //$.ajax({
+            //    type: 'GET',
+            //    url: 'https://management-api.wonderpush.com/v1/campaigns?fields[]=notificationIds&&accessToken=MDlmZDhhMTlhNTExYzFlMzRmOGFiMWNmZjVlOTU2NGVkYjdmMThiYjVmZDhkMTgxZTMzY2IwNDZlOTk2OTU4Yw',
+            //    dataType: "json",
+            //    async: false,
+            //    data: {} ,
+            //    success: function (data) {
+            //        console.log(data);
+            //        var city = ('#city');
+            //        $(city).empty();
+            //        for (var i = 0; i < data.length; i++) {
+            //            $(city).append('<option id=' + data[i].sysid + ' value=' + data[i].city_name + '>' + data[i].city_name + '</option>');
 
-    WonderPush.ready(function (WonderPushSDK) {
-        WonderPushSDK.putInstallationCustomProperties({
-            bool_isTest: true,
-            string_country: "MY"
+            //        }
+            //    }
+
+            //});
+            $.ajax({
+                url: "https://management-api.wonderpush.com/v1/campaigns?accessToken=M2IzZTNiMzkzZWRjMGYxMDIxMTdkZjljNWFjZDVlNzI4ODAxZDFhMDUzZDRhMTY0MDNiNjliMTQzODIxNGJiMA",
+                type: "GET",
+                dataType: "json",
+                async: false,
+                data: "",
+                success: function (data) {
+                    jQuery.each(data, function (index, item) {
+
+                        if (index == "data") {
+                            var array = [];
+
+                            for (var i = 0; i < item.length; ++i) {
+                                if (item[i].stats["lastPushDate"] !== undefined && item[i].notificationIds !== undefined) {
+                                    array.push({
+                                        notificationId: item[i].notificationIds[0],
+                                        lastpushdate: item[i].stats["lastPushDate"]
+                                    });
+
+                                }
+                            }
+                            array.sort(function (a, b) {
+                                return a.lastpushdate - b.lastpushdate;
+                            });
+
+                            console.log(array);
+                            for (var i = 0; i < array.length; ++i) {
+                                $.ajax({
+
+                                    type: "get",
+                                    url: "https://management-api.wonderpush.com/v1/notifications/" + array[i]["notificationId"] + "?accessToken=M2IzZTNiMzkzZWRjMGYxMDIxMTdkZjljNWFjZDVlNzI4ODAxZDFhMDUzZDRhMTY0MDNiNjliMTQzODIxNGJiMA",
+                                    data: "",
+                                    success: function (data) {
+
+                                        var title = "";
+                                        if (data.alert.title != undefined) {
+                                            title = "<strong>" + data.alert.title + "</strong><br />";
+                                        }
+
+                                        $("#NotificationHistory").append("<hr><div style='padding:1px 1px 1px 1px' class=\"chunk\">" + title + data.alert.text.substring(0, 100) + "</div>");
+                                    },
+                                });
+                            }
+                        }
+                    });
+                },
+            });
         });
-    });
 
-    //"MY"//Request.Cookies["gaCountry"].Value,
+
 
 </script>  
