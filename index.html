@@ -1,0 +1,50 @@
+<script>
+(function(w,d,s,i,n){w[n]=w[n]||{q:[],init:function(o){w[n].initOpts=o;},ready:function(c){w[n].q.push(c);}};
+setTimeout(function(j,k){if(!d.getElementById(i)){k=d.getElementsByTagName(s)[0];j=d.createElement(s);j.id=i;
+j.src="https://cdn.by.wonderpush.com/sdk/1.1/wonderpush-loader.min.js";k.parentNode.insertBefore(j,k);}},0);
+}(window,document,"script","wonderpush-jssdk-loader","WonderPush"));
+
+WonderPush.init({
+    webKey: "7be09f084f0ba8ab5546b4457c47acfa49ddef0a5da4c1702d8aed8263b92f2a",
+    optInOptions: {
+        // You can modify or translate the following:
+        externalBoxMessage: "Easybook would like to send you notifications",
+        externalBoxExampleTitle: "Easybook notification",
+        externalBoxExampleMessage: "This is an Easybook notification",
+        externalBoxDisclaimer: "You can always unsubscribe at anytime.",
+        externalBoxProcessingMessage: "Subscribing...",
+        externalBoxSuccessMessage: "Thanks for subscribing!",
+        externalBoxFailureMessage: "This function was not supported to this particular browser..",
+        externalBoxTooLongHint: "Poor connection or private browsing?",
+        externalBoxCloseHint: "Close",
+        modalBoxMessage: "We will send you personalized notifications.<br/>You can always unsubscribe at any time.",
+        modalBoxButton: "Got it!"
+    },
+    plugins: {
+        'optin-dialog': null
+        }
+    
+    //plugins: {
+    //    'optin-dialog': {
+    //        triggers: {
+
+    //        },
+    //        title: "Would you like to subscribe to our Easybook deals?",
+    //        message: "You can always unsubscribe at any time.",
+    //        positiveButton: "Okay",
+    //        negativeButton: "Later",
+    //        hidePoweredBy: true
+    //    }
+    //}
+    });
+
+    WonderPush.ready(function (WonderPushSDK) {
+        WonderPushSDK.putInstallationCustomProperties({
+            bool_isTest: true,
+            string_country: "MY"
+        });
+    });
+
+    //"MY"//Request.Cookies["gaCountry"].Value,
+
+</script>  
